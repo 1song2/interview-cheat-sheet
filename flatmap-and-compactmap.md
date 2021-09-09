@@ -19,7 +19,7 @@ Question: *4.1 버전 미만과 최신버전에서의 배열의 메소드인 fla
   func flatMap<ElementOfResult>(_ transform: (Self.Element) throws -> ElementOfResult?) rethrows -> [ElementOfResult]
   ```
 
-  * 시퀀스의 각 요소에 대해 특정 변환을 적용한 **`nil`**이 아닌 결과를 포함하는 배열을 반환
+  * 시퀀스의 각 요소에 대해 특정 변환을 적용한 **`nil`이 아닌** 결과를 포함하는 배열을 반환
   * 복잡도: O(*m* + *n*) (n: 시퀀스의 길이, m: 결과의 길이)
 
 * [`compactMap(_:)`](https://developer.apple.com/documentation/swift/sequence/2950916-compactmap)
@@ -28,7 +28,7 @@ Question: *4.1 버전 미만과 최신버전에서의 배열의 메소드인 fla
   func compactMap<ElementOfResult>(_ transform: (Self.Element) throws -> ElementOfResult?) rethrows -> [ElementOfResult]
   ```
 
-  * 시퀀스의 각 요소에 대해 특정 변환을 적용한 **`nil`**이 아닌 결과를 포함하는 배열을 반환
+  * 시퀀스의 각 요소에 대해 특정 변환을 적용한 **`nil`이 아닌** 결과를 포함하는 배열을 반환
   * 복잡도: O(*m* + *n*) (n: 시퀀스의 길이, m: 결과의 길이)
 
 ### Swift 4.1 미만에서의 `flatMap(_:)`
@@ -42,7 +42,7 @@ Question: *4.1 버전 미만과 최신버전에서의 배열의 메소드인 fla
   3. Sequence.flatMap<U>(_: (Element) -> U?) -> [U]
   ```
 
-* 3번 오버로드: 두가지 방식으로 잘 못 사용될 수 있음
+* 3번 오버로드: 잘못 사용될 여지가 있음
 
   * 추가적인 래핑과 언래핑
 
@@ -51,6 +51,8 @@ Question: *4.1 버전 미만과 최신버전에서의 배열의 메소드인 fla
       var age: Int
       var name: String
     }
+    
+    let people = [Person(age: 21, name: "Foo"), Person(age: 17, name: "Bar"), Person(age: 20, name: "Baz")]
     
     let flatMappedAges = people.flatMap { $0.age } // prints: [21, 17, 20]
     let mappedAges = people.map { $0.age } // prints: [21, 17, 20]  
@@ -62,8 +64,8 @@ Question: *4.1 버전 미만과 최신버전에서의 배열의 메소드인 fla
 
     ```swift
     let names = people.flatMap { $0.name }
-    // 4.0 이전 버전에서의 동작: ["Osame", "Masoud", "Mehdi"]
-    // 4.0 버전부터의 동작: ["O", "s", "a", "m", "e", "M", "a", "s", "o", "u", "d", "M", "e", "h", "d", "i"]
+    // 4.0 이전 버전: ["Foo", "Bar", "Baz"]
+    // 4.0 버전부터: ["F", "o", "o", "B", "a", "r", "B", "a", "z"]
     ```
 
     * Swift 4.0부터 `String`이 `Collection` 프로토콜 순응하게 되면서 3번 오버로드 대신 1번 오버로드로 동작
